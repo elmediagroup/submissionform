@@ -81,6 +81,9 @@ button {
 }
 
 button:hover { background: #e88a14; }
+button:disabled { opacity: 0.6; cursor: wait; }
+
+.hp { position: absolute; left: -9999px; height: 0; overflow: hidden; }
 
 .invalid { border-color: var(--error) !important; }
 

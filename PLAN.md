@@ -66,7 +66,7 @@ Can you please reach out to philip@elevatemediagroup.com.au for a detailed quote
   - The page shows a "View / download proposal" link next to the checkbox.
   - Public URL (once live): `https://elmediagroup.github.io/submissionform/docs/Committee-proposal.pdf`
   - It is a PDF, so browsers can preview it in-page or in a new tab, and users can download it.
-- Submit button (opens the user's email client with To / Subject / Body prefilled)
+- Submit button: the page sends the email itself via EmailJS (see README.md); no email program needed
 
 _Confirm the actual fields with EL Media._
 
@@ -76,7 +76,7 @@ _Confirm the actual fields with EL Media._
 2. [x] Initialise local git repo in `elsubmissionform/`, add `.gitignore` (with `patcode.md`)
 3. [x] Connect remote `https://github.com/elmediagroup/submissionform.git` using the PAT
 4. [x] Build `index.html`, `styles.css`, `script.js`
-5. [x] Submission via `mailto:` (no backend needed)
+5. [ ] Create EmailJS account/service/template and paste the 3 IDs into `script.js` (see README.md)
 6. [x] Test locally (validation, success/error states, mobile layout)
 7. [x] Push to `main` (this also publishes the `/docs` proposal files)
 8. [ ] Enable GitHub Pages (Settings â†’ Pages â†’ deploy from `main` / root)
@@ -96,4 +96,5 @@ _Confirm the actual fields with EL Media._
 | _update_ | Proposal document in `/docs` to be published on the site and linked from the email |
 | _update_ | PDF supplied (`docs/Committee-proposal.pdf`); `.docx` removed; plan updated |
 | _update_ | Form built (mailto approach, building name field added), pushed to main. Pages must be enabled manually: PAT lacks Pages permission |
+| _update_ | Building field removed; switched from mailto: to direct sending via EmailJS (needs account setup) |
 
