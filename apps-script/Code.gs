@@ -10,6 +10,8 @@
  * Nothing secret lives in this file; credentials stay in your Google account.
  */
 
+var PDF_URL = "https://elmediagroup.github.io/submissionform/docs/Committee-proposal.pdf";
+var PDF_NAME = "Committee-proposal.pdf";
 var COPY_TO = "philip@elevatemediagroup.com.au"; // BCC on every email ("" to disable)
 var SUBJECT = "Proposal: digital notice boards for our building";
 var MAX_PER_SENDER_PER_HOUR = 3;   // same resident email address
@@ -59,6 +61,16 @@ function doPost(e) {
     body: message
   };
   if (COPY_TO) options.bcc = COPY_TO;
+
+  if (p.attach) {
+    try {
+      var res = UrlFetchApp.fetch(PDF_URL, { muteHttpExceptions: true });
+      if (res.getResponseCode() !== 200) throw new Error("HTTP " + res.getResponseCode());
+      options.attachments = [res.getBlob().setName(PDF_NAME)];
+    } catch (err) {
+      return json_({ ok: false, error: "attachment_failed" });
+    }
+  }
 
   try {
     MailApp.sendEmail(options);

@@ -33,4 +33,4 @@ If you change `Code.gs` later, use **Deploy > Manage deployments > Edit > New ve
 ## Notes
 
 - The web app URL is a public endpoint, not a secret. Never put a GitHub token or Google password in this repo.
-- The proposal PDF lives in `docs/` and is linked from the form and the email.
+- The proposal PDF lives in `docs/`, is linked from the form for preview, and is attached to the email when the checkbox is ticked (the script downloads it from the published site, so it needs the extra "connect to an external service" permission; after updating `Code.gs`, run `doGet` once in the editor to approve it, then redeploy as a new version).

@@ -5,7 +5,6 @@
   // It is a public endpoint, not a secret; limits are enforced server-side.
   var WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxBe0wa9_E917jR24giLaQoKTNwElOJ48G2EjwkRmjpz1rhIhV_ij7fSvqNgJgKIm9V9Q/exec";
 
-  var PROPOSAL_URL = "https://elmediagroup.github.io/submissionform/docs/Committee-proposal.pdf";
   var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   var ERRORS = {
@@ -21,7 +20,7 @@
     from: document.getElementById("from"),
     to: document.getElementById("to"),
     message: document.getElementById("message"),
-    link: document.getElementById("include-link"),
+    attach: document.getElementById("attach-pdf"),
     honeypot: document.getElementById("website")
   };
 
@@ -51,11 +50,7 @@
   }
 
   function buildMessage() {
-    var body = el.message.value.trim();
-    if (el.link.checked) {
-      body += "\n\nProposal document: " + PROPOSAL_URL;
-    }
-    return body + "\n\nRegards,\n" + el.name.value.trim() + "\n" + el.from.value.trim();
+    return el.message.value.trim() + "\n\nRegards,\n" + el.name.value.trim() + "\n" + el.from.value.trim();
   }
 
   form.addEventListener("submit", function (event) {
@@ -80,6 +75,7 @@
       from: el.from.value.trim(),
       to: el.to.value.trim(),
       message: buildMessage(),
+      attach: el.attach.checked ? "1" : "",
       website: el.honeypot.value
     });
 

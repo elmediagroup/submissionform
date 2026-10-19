@@ -100,3 +100,4 @@ _Confirm the actual fields with EL Media._
 | _update_ | Logo and Elevate site styling added; Pages enabled and live |
 | _update_ | EmailJS replaced by a Google Apps Script web app (pps-script/Code.gs) sending via the owner's Google account. Server-side limits: 3/hour per resident email, 2/6h per committee email, honeypot, 5000-char cap, BCC to Philip. Awaiting deployment and URL |
 | _update_ | Apps Script deployed; URL set in script.js. CORS read verified with curl; real send still to test |
+| _update_ | Proposal PDF now attached to the email (fetched by Code.gs from the published site) instead of linked; stray <p> removed from the message |
