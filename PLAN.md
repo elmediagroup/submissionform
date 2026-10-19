@@ -66,7 +66,7 @@ Can you please reach out to philip@elevatemediagroup.com.au for a detailed quote
   - The page shows a "View / download proposal" link next to the checkbox.
   - Public URL (once live): `https://elmediagroup.github.io/submissionform/docs/Committee-proposal.pdf`
   - It is a PDF, so browsers can preview it in-page or in a new tab, and users can download it.
-- Submit button: the page sends the email itself via EmailJS (see README.md); no email program needed
+- Submit button: the page POSTs to a Google Apps Script web app that sends the email from the owner's Google account (see README.md and `apps-script/Code.gs`); no email program needed
 
 _Confirm the actual fields with EL Media._
 
@@ -76,11 +76,11 @@ _Confirm the actual fields with EL Media._
 2. [x] Initialise local git repo in `elsubmissionform/`, add `.gitignore` (with `patcode.md`)
 3. [x] Connect remote `https://github.com/elmediagroup/submissionform.git` using the PAT
 4. [x] Build `index.html`, `styles.css`, `script.js`
-5. [ ] Create EmailJS account/service/template and paste the 3 IDs into `script.js` (see README.md)
+5. [ ] Deploy `apps-script/Code.gs` as a Web app (Execute as Me, Anyone) and paste the `/exec` URL into `WEB_APP_URL` in `script.js` (see README.md)
 6. [x] Test locally (validation, success/error states, mobile layout)
 7. [x] Push to `main` (this also publishes the `/docs` proposal files)
-8. [ ] Enable GitHub Pages (Settings â†’ Pages â†’ deploy from `main` / root)
-9. [ ] Test the live URL (`https://elmediagroup.github.io/submissionform/`)
+8. [x] Enable GitHub Pages (Settings â†’ Pages â†’ deploy from `main` / root)
+9. [ ] Test the live URL, including a real send and the cross-origin JSON read (`https://elmediagroup.github.io/submissionform/`)
 10. [ ] Rotate the PAT and hand over documentation
 
 ## 8. Open questions
@@ -97,4 +97,5 @@ _Confirm the actual fields with EL Media._
 | _update_ | PDF supplied (`docs/Committee-proposal.pdf`); `.docx` removed; plan updated |
 | _update_ | Form built (mailto approach, building name field added), pushed to main. Pages must be enabled manually: PAT lacks Pages permission |
 | _update_ | Building field removed; switched from mailto: to direct sending via EmailJS (needs account setup) |
-
+| _update_ | Logo and Elevate site styling added; Pages enabled and live |
+| _update_ | EmailJS replaced by a Google Apps Script web app (pps-script/Code.gs) sending via the owner's Google account. Server-side limits: 3/hour per resident email, 2/6h per committee email, honeypot, 5000-char cap, BCC to Philip. Awaiting deployment and URL |

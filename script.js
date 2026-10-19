@@ -1,21 +1,17 @@
 (function () {
   "use strict";
 
-  // --- EmailJS configuration -------------------------------------------------
-  // Create a free account at https://www.emailjs.com, connect an email service,
-  // create a template, then paste the three values below.
-  // The public key is designed to be visible in the browser; restrict it to
-  // this site's domain in the EmailJS dashboard (see README.md).
-  var EMAILJS = {
-    serviceId: "YOUR_SERVICE_ID",
-    templateId: "YOUR_TEMPLATE_ID",
-    publicKey: "YOUR_PUBLIC_KEY"
-  };
-  // ---------------------------------------------------------------------------
+  // Paste the Web app URL from Google Apps Script here (see README.md).
+  // It is a public endpoint, not a secret; limits are enforced server-side.
+  var WEB_APP_URL = "YOUR_WEB_APP_URL";
 
   var PROPOSAL_URL = "https://elmediagroup.github.io/submissionform/docs/Committee-proposal.pdf";
-  var SUBJECT = "Proposal: digital notice boards for our building";
   var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  var ERRORS = {
+    rate_limited: "Too many emails have been sent to or from these addresses recently. Please try again later.",
+    quota: "We can't send any more emails right now. Please try again tomorrow."
+  };
 
   var form = document.getElementById("proposal-form");
   var status = document.getElementById("status");
@@ -51,27 +47,19 @@
   }
 
   function isConfigured() {
-    return Object.keys(EMAILJS).every(function (k) {
-      return EMAILJS[k] && EMAILJS[k].indexOf("YOUR_") !== 0;
-    });
+    return WEB_APP_URL.indexOf("https://script.google.com/") === 0;
   }
 
-  function buildBody(name, from) {
+  function buildMessage() {
     var body = el.message.value.trim();
     if (el.link.checked) {
       body += "\n\nProposal document: " + PROPOSAL_URL;
     }
-    return body + "\n\nRegards,\n" + name + "\n" + from;
+    return body + "\n\nRegards,\n" + el.name.value.trim() + "\n" + el.from.value.trim();
   }
 
   form.addEventListener("submit", function (event) {
     event.preventDefault();
-
-    // Bots fill the hidden field; pretend success and send nothing.
-    if (el.honeypot.value) {
-      setStatus("Thank you, your email has been sent.", "ok");
-      return;
-    }
 
     if (!validate()) {
       setStatus("Please complete the highlighted fields with valid details.", "error");
@@ -83,30 +71,28 @@
       return;
     }
 
-    var name = el.name.value.trim();
-    var from = el.from.value.trim();
-
     sendBtn.disabled = true;
     setStatus("Sending...", "");
 
-    fetch("https://api.emailjs.com/api/v1.0/email/send", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        service_id: EMAILJS.serviceId,
-        template_id: EMAILJS.templateId,
-        user_id: EMAILJS.publicKey,
-        template_params: {
-          to_email: el.to.value.trim(),
-          from_name: name,
-          reply_to: from,
-          subject: SUBJECT,
-          message: buildBody(name, from)
-        }
-      })
-    })
+    // URL-encoded body = a "simple" request, so no CORS preflight is needed.
+    var data = new URLSearchParams({
+      name: el.name.value.trim(),
+      from: el.from.value.trim(),
+      to: el.to.value.trim(),
+      message: buildMessage(),
+      website: el.honeypot.value
+    });
+
+    fetch(WEB_APP_URL, { method: "POST", body: data })
       .then(function (res) {
         if (!res.ok) throw new Error("HTTP " + res.status);
+        return res.json();
+      })
+      .then(function (result) {
+        if (!result.ok) {
+          setStatus(ERRORS[result.error] || "Sorry, the email could not be sent. Please check the details and try again.", "error");
+          return;
+        }
         setStatus("Thank you, your email has been sent to the committee.", "ok");
         form.reset();
       })

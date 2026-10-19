@@ -1,30 +1,36 @@
 # EL Media Submission Form
 
-Static page hosted on GitHub Pages. Residents fill in the form and the page sends the email directly through [EmailJS](https://www.emailjs.com) (no email program needed, no backend).
+Static page hosted on GitHub Pages. Residents fill in the form and the email is sent from EL Media's Google account by a small Google Apps Script web app (no email program needed, no server to run, no credentials in this repo).
 
 Live URL: https://elmediagroup.github.io/submissionform/
 
-## One-time EmailJS setup (free plan: 200 emails/month)
+## Why Apps Script and not SMTP?
 
-1. Sign up at https://www.emailjs.com.
-2. **Email Services** > Add New Service > connect the mailbox the emails should be sent from (e.g. a Gmail or Outlook account for EL Media). Copy the **Service ID**.
-3. **Email Templates** > Create New Template, with:
-   - **To Email:** `{{to_email}}`
-   - **Reply To:** `{{reply_to}}`
-   - **From Name:** `{{from_name}}`
-   - **Subject:** `{{subject}}`
-   - **Content:** `{{message}}`
-   - **Bcc:** `philip@elevatemediagroup.com.au` (optional, gives Philip a copy of every lead)
+Browsers cannot open SMTP connections, and putting a Google SMTP password in the page would expose it to every visitor. Apps Script runs on Google's servers under your account, so the page only needs a public web app URL.
 
-   Copy the **Template ID**.
-4. **Account > General** > copy the **Public Key**.
-5. **Account > Security** > restrict allowed origins to `https://elmediagroup.github.io` so the key can't be used from other sites.
-6. Paste the three values into the `EMAILJS` block at the top of `script.js`, then commit and push.
+## One-time setup (about 5 minutes)
 
-The public key is meant to be visible in browser code. Never put a GitHub token or an EmailJS private key in this repo.
+Use the Google account the emails should be sent **from** (a shared EL Media Gmail / Google Workspace account is ideal).
+
+1. Go to https://script.google.com and click **New project**. Name it `EL Media submission form`.
+2. Replace the contents of `Code.gs` with the contents of [`apps-script/Code.gs`](apps-script/Code.gs) in this repo. Adjust `COPY_TO` (BCC copy of every lead, `""` to disable) and the limits if you like.
+3. Click **Deploy > New deployment > Select type (gear) > Web app**:
+   - **Execute as:** Me
+   - **Who has access:** Anyone
+   - Click **Deploy** and approve the permission prompts (the script needs to send email as you; on the "Google hasn't verified this app" screen choose **Advanced > Go to project**).
+4. Copy the **Web app URL** (starts with `https://script.google.com/macros/s/.../exec`). Opening it in a browser should show `{"ok":true,...}`.
+5. Paste it into `WEB_APP_URL` at the top of `script.js`, then commit and push.
+
+If you change `Code.gs` later, use **Deploy > Manage deployments > Edit > New version** so the same URL serves the updated code.
+
+## Limits and abuse protection
+
+- Sends from your Google account: about 100 emails/day on a free Gmail account, about 1,500/day on Google Workspace.
+- The script limits each resident email address to 3 sends per hour and each committee address to 2 per 6 hours, ignores submissions that fill the hidden honeypot field, caps the message length, and appends a footer saying the email was sent via the form on behalf of the resident (reply-to is the resident's address).
+- Replies from committees go to the resident; Philip gets a BCC copy.
+- If abuse appears, tighten the limits in `Code.gs` or add reCAPTCHA.
 
 ## Notes
 
-- Emails are sent from the mailbox connected in EmailJS; the resident's address is set as Reply-To.
-- Spam protection: a hidden honeypot field plus EmailJS rate limits. Add EmailJS's reCAPTCHA option if abuse appears.
+- The web app URL is a public endpoint, not a secret. Never put a GitHub token or Google password in this repo.
 - The proposal PDF lives in `docs/` and is linked from the form and the email.
