@@ -26,7 +26,7 @@ If you change `Code.gs` later, use **Deploy > Manage deployments > Edit > New ve
 ## Limits and abuse protection
 
 - Sends from your Google account: about 100 emails/day on a free Gmail account, about 1,500/day on Google Workspace.
-- The script limits each resident email address to 3 sends per hour and each committee address to 2 per 6 hours, ignores submissions that fill the hidden honeypot field, caps the message length, and appends a footer saying the email was sent via the form on behalf of the resident (reply-to is the resident's address).
+- The script limits each resident email address to 3 sends per hour and each committee address to 2 per 6 hours, ignores submissions that fill the hidden honeypot field, and caps the message length. The email shows the resident's name as the sender and uses the resident's address as reply-to; no extra text is added to the body.
 - Replies from committees go to the resident; Philip gets a BCC copy.
 - If abuse appears, tighten the limits in `Code.gs` or add reCAPTCHA.
 

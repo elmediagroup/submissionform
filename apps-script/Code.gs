@@ -1,6 +1,11 @@
 /**
- * Receives the submission form POST and sends the email from the Google
- * account that owns this script. Deploy as a Web app (see ../README.md).
+ * Receives the submission form POST and sends the email to the committee
+ * address entered by the resident, with the resident as the visible sender
+ * (display name) and reply-to. Deploy as a Web app (see ../README.md).
+ *
+ * Note: the technical "From" address is always the Google account that owns
+ * this script. Gmail does not let a script send as an arbitrary address
+ * (that would be spoofing and would fail SPF/DKIM/DMARC checks).
  *
  * Nothing secret lives in this file; credentials stay in your Google account.
  */
@@ -45,15 +50,13 @@ function doPost(e) {
     lock.releaseLock();
   }
 
-  var footer = "\n\n---\nSent via the Elevate Media Group submission form on behalf of " +
-    name + " <" + from + ">. Reply to this email to respond to them directly.";
-
+  // Sender shows as the resident's name; replies go to the resident's address.
   var options = {
     to: to,
     replyTo: from,
-    name: name + " via Elevate Media Group",
+    name: name,
     subject: SUBJECT,
-    body: message + footer
+    body: message
   };
   if (COPY_TO) options.bcc = COPY_TO;
 
