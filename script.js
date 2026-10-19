@@ -3,7 +3,7 @@
 
   // Paste the Web app URL from Google Apps Script here (see README.md).
   // It is a public endpoint, not a secret; limits are enforced server-side.
-  var WEB_APP_URL = "YOUR_WEB_APP_URL";
+  var WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxBe0wa9_E917jR24giLaQoKTNwElOJ48G2EjwkRmjpz1rhIhV_ij7fSvqNgJgKIm9V9Q/exec";
 
   var PROPOSAL_URL = "https://elmediagroup.github.io/submissionform/docs/Committee-proposal.pdf";
   var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
