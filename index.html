@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Suggest digital notice boards to your committee | Elevate Media Group</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="card">
+    <h1>Digital notice boards for your building</h1>
+    <p class="intro">
+      Send a short note to your Owners Corporation / Strata Committee asking them to consider a
+      <strong>no-cost</strong> digital screen installation from Elevate Media Group.
+      Review the message below, edit it if you like, then press <em>Send email</em>.
+    </p>
+
+    <form id="proposal-form" novalidate>
+      <div class="field">
+        <label for="name">Your name</label>
+        <input id="name" name="name" type="text" autocomplete="name" required>
+      </div>
+
+      <div class="field">
+        <label for="from">Your email</label>
+        <input id="from" name="from" type="email" autocomplete="email" required>
+        <small>Used so the committee can reply to you. Your email program sends the message from your own account.</small>
+      </div>
+
+      <div class="field">
+        <label for="to">Committee email</label>
+        <input id="to" name="to" type="email" required>
+      </div>
+
+      <div class="field">
+        <label for="building">Building name / address</label>
+        <input id="building" name="building" type="text" autocomplete="street-address">
+      </div>
+
+      <div class="field">
+        <label for="message">Message</label>
+        <textarea id="message" name="message" rows="12" required>Dear Committee members. I would like the committee to consider a proposal for digital notice boards in our lobby and lift areas. The screens could improve how building notices, maintenance updates and committee information are shared with residents, while also creating an annual revenue stream that may support building and maintenance works.
+
+Depending on the number of floors and number of screens we can potentially see thousands of dollars be added to our bottom line.
+
+Can you please reach out to philip@elevatemediagroup.com.au for a detailed quote and add his proposal to the agenda of the next committee meeting?</textarea>
+      </div>
+
+      <div class="field check">
+        <input id="include-link" name="include-link" type="checkbox" checked>
+        <label for="include-link">
+          Include a link to the proposal document in the email
+          (<a href="docs/Committee-proposal.pdf" target="_blank" rel="noopener">view / download the proposal</a>)
+        </label>
+      </div>
+
+      <button type="submit">Send email</button>
+      <p id="status" role="status" aria-live="polite"></p>
+    </form>
+  </main>
+
+  <footer>
+    <a href="https://www.elevatemediagroup.com.au/" target="_blank" rel="noopener">Elevate Media Group</a>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
